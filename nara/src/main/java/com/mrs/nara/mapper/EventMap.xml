@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <!-- 
+		이쿼리를 이용하기 위해선 namespace명.id로 접근하면 된다.
+		파라미터를 map으로 넘겼기 때문에 타입을 정의해줘야한다.
+		resultType는 Integer로 줬다. int는 안된다 클래스 타입으로 줘야한다.
+     -->
+<mapper namespace="Event">
+
+
+	<select resultType="com.mrs.nara.vo.EventVo" parameterType="com.mrs.nara.vo.EventVo" id="getEventList">
+		SELECT EVENT_CODE ,EVENT_KIND ,  EVENT_STATUS , EVENT_TITLE , EVENT_TEXT,
+			   QUESTION_CNT , EVENT_SDATE, EVENT_EDATE, INSERTDATE from NR_event WHERE 1 = 1 
+		<if test="EVENT_KIND != null and EVENT_KIND != ''">AND EVENT_KIND = ${EVENT_KIND}</if>
+		<if test="EVENT_STATUS != null and EVENT_STATUS != ''">AND EVENT_STATUS = ${EVENT_STATUS} </if>
+		<if test="EVENT_TITLE != null and EVENT_TITLE != ''">AND EVENT_TITLE LIKE '%' || ${EVENT_TITLE} || '%' </if>
+		<if test="EVENT_TEXT != null and EVENT_TEXT != ''">AND EVENT_TEXT  LIKE '%' || ${EVENT_TEXT} || '% </if>
+		ORDER BY EVENT_CODE 
+		<include refid="Paging.altibase"/>
+	</select>
+	
+	
+	
+	
+	<insert id="setEventI"  parameterType="com.mrs.nara.vo.EventVo" >
+			insert into NR_event(
+			EVENT_CODE    ,
+			EVENT_KIND      ,
+			EVENT_STATUS ,
+			EVENT_TITLE ,
+			EVENT_TEXT ,
+			QUESTION_CNT ,
+			EVENT_FILE_NAME ,
+			EVENT_SDATE ,
+			EVENT_EDATE ,
+			OPERATOR ,
+			INSERTDATE    ,
+			UPDATEDATE  	
+			)
+			values(
+			#{EVENT_CODE} ,
+			#{EVENT_KIND} , 
+			#{EVENT_STATUS} ,
+			#{EVENT_TITLE} ,
+			#{EVENT_TEXT} ,
+			#{QUESTION_CNT} ,
+			#{EVENT_FILE_NAME} ,
+			#{EVENT_SDATE} ,
+			#{EVENT_EDATE} ,
+			#{OPERATOR} ,
+			sysdate,
+			sysdate
+			)
+	
+	</insert>
+	
+		
+	<update id="setEventU" parameterType="com.mrs.nara.vo.EventVo">
+		update NR_event set 
+			UPDATEDATE = sysdate
+			, OPERATOR = #{OPERATOR}
+			<if test="EVENT_KIND != null and EVENT_KIND != ''">, EVENT_KIND = #{EVENT_KIND}</if>
+			<if test="EVENT_STATUS != null and EVENT_STATUS != ''">, EVENT_STATUS = #{EVENT_STATUS}</if>
+			<if test="EVENT_TITLE != null and EVENT_TITLE != ''">, EVENT_TITLE = #{EVENT_TITLE}</if>
+			<if test="EVENT_TEXT != null and EVENT_TEXT != ''">, EVENT_TEXT = #{EVENT_TEXT}</if>
+			<if test="QUESTION_CNT != null and QUESTION_CNT != ''">, QUESTION_CNT = #{QUESTION_CNT}</if>
+			<if test="EVENT_FILE_NAME != null and EVENT_FILE_NAME != ''">, EVENT_FILE_NAME = #{EVENT_FILE_NAME}</if>
+			<if test="EVENT_SDATE != null and EVENT_SDATE != ''">, EVENT_SDATE = #{EVENT_SDATE}</if>
+			<if test="EVENT_EDATE != null and EVENT_EDATE != ''">, EVENT_EDATE = #{EVENT_EDATE}</if>
+			<if test="EVENT_CODE != null and EVENT_CODE != ''">WHERE EVENT_CODE = #{EVENT_CODE}</if>
+	</update>
+
+	<delete id="setEventD" parameterType="com.mrs.nara.vo.EventVo">
+		delete from NR_event where EVENT_CODE = #{EVENT_CODE}
+	</delete>
+	
+	<select resultType="com.mrs.nara.vo.EventVo" parameterType="com.mrs.nara.vo.EventVo" id="getEventListOne">
+		SELECT * from NR_event WHERE 1 = 1 
+			   AND EVENT_CODE = #{EVENT_CODE}
+		ORDER BY EVENT_CODE 
+	</select>
+
+
+
+	<select resultType="com.mrs.nara.vo.EventVo" parameterType="com.mrs.nara.vo.EventVo" id="getEventQuestionList">
+
+		SELECT EVENT_CODE ,QUESTION_NO ,  QUESTION_TYPE , QUESTION_TEXT , OPERATOR,
+			   INSERTDATE , UPDATEDATE from NR_event_question WHERE 1 = 1 
+		<if test="QUESTION_TYPE != null and QUESTION_TYPE != ''">AND QUESTION_TYPE = ${QUESTION_TYPE}</if>
+		<if test="QUESTION_TEXT != null and QUESTION_TEXT != ''">AND QUESTION_TEXT LIKE '%' || #{QUESTION_TEXT} || '%'</if>
+		ORDER BY EVENT_CODE 
+		<include refid="Paging.altibase"/>
+	</select>
+
+
+	<insert id="setEventQuestionI"  parameterType="com.mrs.nara.vo.EventVo" >
+		insert into NR_Event_Question(
+			EVENT_CODE,
+			QUESTION_NO,
+			QUESTION_TYPE,
+			QUESTION_TEXT,
+			CHOICE_CNT, 
+			CHOICE_1,
+			CHOICE_2,
+			CHOICE_3,
+			CHOICE_4,
+			CHOICE_5,
+			CHOICE_6,
+			OBJECTIVE_CORRECT_ANSWER,
+			SUBJECTIVE_CORRECT_ANSWER,
+			OPERATOR,
+			INSERTDATE,
+			UPDATEDATE
+			)
+			values(
+			#{EVENT_CODE},
+			#{QUESTION_NO},
+			#{QUESTION_TYPE},
+			#{QUESTION_TEXT},
+			#{CHOICE_CNT}, 
+			#{CHOICE_1},
+			#{CHOICE_2},
+			#{CHOICE_3},
+			#{CHOICE_4},
+			#{CHOICE_5},
+			#{CHOICE_6},
+			#{OBJECTIVE_CORRECT_ANSWER},
+			#{SUBJECTIVE_CORRECT_ANSWER},
+			#{OPERATOR},
+			sysdate,
+			sysdate
+			)
+	
+	</insert>
+	
+		
+	<update id="setEventQuestionU" parameterType="com.mrs.nara.vo.EventVo">
+		update NR_Event_Question set 
+			  UPDATEDATE = sysdate
+			, OPERATOR = #{OPERATOR}
+			<if test="QUESTION_TYPE != null and QUESTION_TYPE != ''">, QUESTION_TYPE = #{QUESTION_TYPE}</if>
+			<if test="QUESTION_TEXT != null and QUESTION_TEXT != ''">, QUESTION_TEXT = #{QUESTION_TEXT}</if>
+			<if test="CHOICE_CNT != null and CHOICE_CNT != ''">, CHOICE_CNT = #{CHOICE_CNT}</if>
+			<if test="CHOICE_1 != null and CHOICE_1 != ''">, CHOICE_1 = #{CHOICE_1}</if>
+			<if test="CHOICE_2 != null and CHOICE_2 != ''">, CHOICE_2 = #{CHOICE_2}</if>
+			<if test="CHOICE_3 != null and CHOICE_3 != ''">, CHOICE_3 = #{CHOICE_3}</if>
+			<if test="CHOICE_4 != null and CHOICE_4 != ''">, CHOICE_4 = #{CHOICE_4}</if>
+			<if test="CHOICE_5 != null and CHOICE_5 != ''">, CHOICE_5 = #{CHOICE_5}</if>
+			<if test="CHOICE_6 != null and CHOICE_6 != ''">, CHOICE_6 = #{CHOICE_6}</if>
+			<if test="OBJECTIVE_CORRECT_ANSWER != null and OBJECTIVE_CORRECT_ANSWER != ''">, OBJECTIVE_CORRECT_ANSWER = #{OBJECTIVE_CORRECT_ANSWER}</if>
+			<if test="SUBJECTIVE_CORRECT_ANSWER != null and SUBJECTIVE_CORRECT_ANSWER != ''">, SUBJECTIVE_CORRECT_ANSWER = #{SUBJECTIVE_CORRECT_ANSWER}</if>
+			WHERE EVENT_CODE = #{EVENT_CODE}
+			AND  QUESTION_NO = #{QUESTION_NO}
+	</update>
+
+	<delete id="setEventQuestionD" parameterType="com.mrs.nara.vo.EventVo">
+		delete from NR_Event_Question where EVENT_CODE = #{EVENT_CODE} AND QUESTION_NO = #{QUESTION_NO}
+	</delete>
+	
+	<select resultType="com.mrs.nara.vo.EventVo" parameterType="com.mrs.nara.vo.EventVo" id="getEventQuestionListOne">
+		SELECT * from NR_Event_Question WHERE 1 = 1 
+			   AND EVENT_CODE = #{EVENT_CODE}
+			   AND QUESTION_NO = #{QUESTION_NO}
+		ORDER BY EVENT_CODE 
+	</select>
+	
+	<insert id="setEventAnswerI"  parameterType="com.mrs.nara.vo.EventVo" >
+		insert into NR_Event_Answer(
+			USER_ID,
+			EVENT_CODE,
+			QUESTION_NO,
+			QUESTION_TYPE,
+			OBJECTIVE_ANSWER, 
+			SUBJECTIVE_ANSWER,
+			CORRECT_FLAG,
+			EVENT_WIN_FLAG,
+			OPERATOR,
+			INSERTDATE,
+			UPDATEDATE
+			)
+			values(
+			#{USER_ID},
+			#{EVENT_CODE},
+			#{QUESTION_NO},
+			#{QUESTION_TYPE},
+			#{OBJECTIVE_ANSWER}, 
+			#{SUBJECTIVE_ANSWER},
+			#{CORRECT_FLAG},
+			#{EVENT_WIN_FLAG},
+			#{OPERATOR},
+			sysdate,
+			sysdate
+			)
+	</insert>
+
+	
+	
+	<select resultType="com.mrs.nara.vo.EventVo" parameterType="com.mrs.nara.vo.EventVo" id="getEventAnswerListOne">
+			SELECT * from NR_Event_Answer WHERE 1 = 1
+			   AND USER_ID = #{USER_ID}
+			   AND EVENT_CODE = #{EVENT_CODE}
+			   AND QUESTION_NO = #{QUESTION_NO}
+			ORDER BY EVENT_CODE 
+		
+	</select>
+</mapper>

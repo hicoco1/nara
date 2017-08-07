@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+    
+    <bean id="propertyPlaceholderConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <value>/WEB-INF/spring/mybatis/mybatis.properties</value>   
+        </property>
+    </bean>
+    
+    <bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+      <property name="driverClassName" value="${alti.driverClass}" /> 
+      <property name="url" value="${alti.url}" />
+      <property name="username" value="${alti.username}" />
+      <property name="password" value="${alti.password}" />
+      <property name="validationQuery" value="select 1 from dual" />
+      <property name="testWhileIdle" value="true"/>
+      <property name="timeBetweenEvictionRunsMillis" value="7200000"/>      
+    </bean>
+    
+    <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="dataSourceSpied" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value="SQL    :: &#10;  "/>
+            </bean>
+        </property>
+    </bean>
+
+    
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">     
+      <property name="dataSource" ref="dataSource" />                                      
+      <property name="configLocation" value="/WEB-INF/spring/mybatis/mybatis-config.xml" />
+      <property name="typeAliasesPackage" value="com.mrs.nara.vo" />
+      <property name="mapperLocations" value="classpath:com/mrs/nara/mapper/*.xml" />      
+      <property name="transactionFactory">                                                
+            <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" />
+      </property>
+    </bean>
+    
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+      <constructor-arg index="0" ref="sqlSessionFactory" /> 
+    </bean>
+
+    
+<!-- =========================== DAO DEFINITIONS : IBATIS IMPLEMENTATIONS ============ -->    
+
+<!-- DB 연결하는 빈을 설정 아래와 같이 봐야한다. -->
+
+    <bean id="userDao" class="com.mrs.nara.dao.UserDao">                             
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean> 
+    <bean id="questionDao" class="com.mrs.nara.dao.QuestionDao">                             
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean> 
+    <bean id="noticeDao" class="com.mrs.nara.dao.NoticeDao">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean> 
+    <bean id="talkhistoryDao" class="com.mrs.nara.dao.TalkHistoryDao">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean> 
+    <bean id="eventDao" class="com.mrs.nara.dao.EventDao">                             
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean> 
+    
+    <bean id="operatorDao" class="com.mrs.nara.dao.OperatorDao">                             
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean> 
+     
+    <bean id="bannedtermsDao" class="com.mrs.nara.dao.BannedTermsDao">                             
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean> 
+      
+    
+    
+</beans>

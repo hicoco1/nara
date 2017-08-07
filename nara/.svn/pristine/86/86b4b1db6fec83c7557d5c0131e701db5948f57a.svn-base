@@ -1,0 +1,94 @@
+package com.mrs.nara.vo;
+
+public class EventVo extends PagingVo{
+   String EVENT_CODE                   ;         
+   String EVENT_KIND                  ;         
+   String EVENT_STATUS                 ;         
+   String EVENT_TITLE                ;         
+   String EVENT_TEXT                ;         
+   String QUESTION_CNT                  ;
+   String EVENT_FILE_NAME                   ;         
+   String EVENT_SDATE                  ;         
+   String EVENT_EDATE                 ;         
+   String OPERATOR                ;         
+   String INSERTDATE                ;         
+   String UPDATEDATE                   ;
+public String getEVENT_CODE() {
+	return EVENT_CODE;
+}
+public void setEVENT_CODE(String eVENT_CODE) {
+	EVENT_CODE = eVENT_CODE;
+}
+public String getEVENT_KIND() {
+	return EVENT_KIND;
+}
+public void setEVENT_KIND(String eVENT_KIND) {
+	EVENT_KIND = eVENT_KIND;
+}
+public String getEVENT_STATUS() {
+	return EVENT_STATUS;
+}
+public void setEVENT_STATUS(String eVENT_STATUS) {
+	EVENT_STATUS = eVENT_STATUS;
+}
+public String getEVENT_TITLE() {
+	return EVENT_TITLE;
+}
+public void setEVENT_TITLE(String eVENT_TITLE) {
+	EVENT_TITLE = eVENT_TITLE;
+}
+public String getEVENT_TEXT() {
+	return EVENT_TEXT;
+}
+public void setEVENT_TEXT(String eVENT_TEXT) {
+	EVENT_TEXT = eVENT_TEXT;
+}
+
+public String getQUESTION_CNT() {
+	return QUESTION_CNT;
+}
+public void setQUESTION_CNT(String qUESTION_CNT) {
+	QUESTION_CNT = qUESTION_CNT;
+}
+public String getEVENT_FILE_NAME() {
+	return EVENT_FILE_NAME;
+}
+public void setEVENT_FILE_NAME(String eVENT_FILE_NAME) {
+	EVENT_FILE_NAME = eVENT_FILE_NAME;
+}
+public String getEVENT_SDATE() {
+	return EVENT_SDATE;
+}
+public void setEVENT_SDATE(String eVENT_SDATE) {
+	EVENT_SDATE = eVENT_SDATE;
+}
+public String getEVENT_EDATE() {
+	return EVENT_EDATE;
+}
+public void setEVENT_EDATE(String eVENT_EDATE) {
+	EVENT_EDATE = eVENT_EDATE;
+}
+public String getOPERATOR() {
+	return OPERATOR;
+}
+public void setOPERATOR(String oPERATOR) {
+	OPERATOR = oPERATOR;
+}
+public String getINSERTDATE() {
+	return INSERTDATE;
+}
+public void setINSERTDATE(String iNSERTDATE) {
+	INSERTDATE = iNSERTDATE;
+}
+public String getUPDATEDATE() {
+	return UPDATEDATE;
+}
+public void setUPDATEDATE(String uPDATEDATE) {
+	UPDATEDATE = uPDATEDATE;
+}
+   
+   
+
+ 
+   
+}

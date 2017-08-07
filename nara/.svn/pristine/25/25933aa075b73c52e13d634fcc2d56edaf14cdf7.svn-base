@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <!-- 
+		이쿼리를 이용하기 위해선 namespace명.id로 접근하면 된다.
+		파라미터를 map으로 넘겼기 때문에 타입을 정의해줘야한다.
+		resultType는 Integer로 줬다. int는 안된다 클래스 타입으로 줘야한다.
+     -->
+<mapper namespace="Event">
+
+	<select resultType="com.mrs.nara.vo.EventVo" parameterType="com.mrs.nara.vo.EventVo" id="getEventList">
+		SELECT EVENT_CODE , EVENT_KIND , EVENT_STATUS , EVENT_TITLE , EVENT_TEXT , QUESTION_CNT,
+			   EVENT_FILE_NAME, EVENT_SDATE, EVENT_EDATE, OPERATOR, INSERTDATE, UPDATEDATE from NR_event WHERE 1 = 1 
+		<if test="EVENT_CODE != null and EVENT_CODE != ''">AND EVENT_CODE = ${EVENT_CODE}</if>
+		<if test="EVENT_KIND != null and EVENT_KIND != ''">AND EVENT_KIND = ${EVENT_KIND}</if>
+		<if test="EVENT_STATUS != null and EVENT_STATUS != ''">AND EVENT_STATUS = ${EVENT_STATUS} </if>
+		ORDER BY EVENT_CODE 
+		<include refid="Paging.altibase"/>
+	</select>
+	
+
+	
+	<select resultType="com.mrs.nara.vo.EventVo" parameterType="com.mrs.nara.vo.EventVo" id="getEventListOne">
+		SELECT * from NR_event WHERE 1 = 1 
+			   AND EVENT_CODE = ${EVENT_CODE}
+		ORDER BY EVENT_CODE 
+	</select>
+	
+	
+	<insert id="EventInsert"  parameterType="com.mrs.nara.vo.EventVo" >
+		<![CDATA[
+		insert into NR_QUESTION (
+			EVENT_CODE,
+			EVENT_KIND,
+			EVENT_STATUS,
+			EVENT_TITLE,
+			EVENT_TEXT,
+			QUESTION_CNT,
+			EVENT_FILE_NAME,
+			EVENT_SDATE,
+			EVENT_EDATE,
+			OPERATOR,
+			EVENT_EDATE,
+			OPERATOR
+		) values (
+			${EVENT_CODE},
+			${EVENT_KIND},
+			${EVENT_STATUS},
+			${EVENT_TITLE},
+			${EVENT_TEXT},
+			${QUESTION_CNT},
+			${EVENT_FILE_NAME},
+			${EVENT_SDATE},
+			${EVENT_EDATE},
+			${OPERATOR},
+			${EVENT_EDATE},
+			${OPERATOR}
+			sysdate,
+			sysdate
+		)
+		]]>
+	</insert>
+
+</mapper>

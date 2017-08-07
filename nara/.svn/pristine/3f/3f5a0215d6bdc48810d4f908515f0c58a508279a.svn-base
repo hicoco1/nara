@@ -1,0 +1,254 @@
+package com.mrs.nara;
+
+import java.security.Principal;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.mrs.nara.dao.EventDao;
+import com.mrs.nara.dao.NoticeDao;
+import com.mrs.nara.dao.QuestionDao;
+import com.mrs.nara.dao.UserDao;
+import com.mrs.nara.vo.EventVo;
+import com.mrs.nara.vo.QuestionVo;
+import com.mrs.nara.vo.UserVo;
+
+@Controller
+public class EventController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Resource(name="userDao")                 
+    private UserDao userDao;
+	
+	@Resource(name="questionDao")                 
+    private QuestionDao questionDao;
+	
+	@Resource(name="noticeDao")                 
+    private NoticeDao noticeDao;
+
+	@Resource(name="eventDao")                 
+    private EventDao eventDao;
+	
+ 
+	
+	@RequestMapping(value="/event", method = {RequestMethod.GET,RequestMethod.POST})
+	public String question(ModelMap model, Principal principal, HttpSession session, QuestionVo questionVo) {
+ 
+		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();*/
+		
+		/*User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String name = user.getUsername();*/
+
+		int page = 1;
+		int countPage = 10;
+		int startPage = ((page - 1) / 10) * 10 + 1;
+
+		int endPage = startPage + countPage - 1;
+		
+		//qvo.setPAGE_NUM(startPage);
+		//qvo.setPAGE_SIZE(endPage);
+		System.out.println(questionVo);
+	   //List<QuestionVo> question = questionDao.getUserList(questionVo);
+		
+		//user = userDao.UserTest(user);
+		
+		String name = principal.getName();
+		System.out.println("name::"+name);
+		
+		
+		model.addAttribute("username", name);
+		
+		//model.addAttribute("question", question);
+		model.addAttribute("message", "Spring Security Hello World");
+		return "event";
+ 
+	}
+	
+	@RequestMapping(value="/NR_event_ing_S", method = {RequestMethod.GET,RequestMethod.POST})
+	public String event_ing_s(ModelMap model, Principal principal, HttpSession session, EventVo eventVo) {
+ 
+		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();*/
+		
+		/*User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String name = user.getUsername();*/
+
+		UserVo user = new UserVo();
+		
+		EventVo evo  = new EventVo();
+		int page = 1;
+		int countPage = 10;
+		String startPage = ((page - 1) / 10) * 10 + 1 + "";
+
+		String endPage = Integer.parseInt(startPage) + countPage - 1 + "";
+		
+		evo.setPAGE_NUM(startPage);
+		evo.setPAGE_SIZE(endPage);
+	   List<EventVo> event_i_s = eventDao.getEventList(eventVo);
+		
+		user = userDao.UserTest(user);
+		
+		String name = principal.getName();
+		System.out.println("name::"+name);
+		
+		
+		model.addAttribute("username", name);
+		
+		model.addAttribute("event_i_s", event_i_s);
+		model.addAttribute("message", "Spring Security Hello World");
+		return "event";
+	}
+	
+	@RequestMapping(value="/NR_event_ing_detail", method = {RequestMethod.GET,RequestMethod.POST})
+	public String event_ing_detail(ModelMap model, Principal principal, HttpSession session, EventVo eventVo) {
+ 
+		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();*/
+		
+		/*User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String name = user.getUsername();*/
+
+		UserVo user = new UserVo();
+		
+		EventVo evo  = new EventVo();
+		int page = 1;
+		int countPage = 10;
+		int startPage = ((page - 1) / 10) * 10 + 1;
+
+		int endPage = startPage + countPage - 1;
+		
+		evo.setPAGE_NUM("startPage");
+		evo.setPAGE_SIZE("endPage");
+	   List<EventVo> event_i_d = eventDao.getEventListOne(eventVo);
+		
+		user = userDao.UserTest(user);
+		
+		String name = principal.getName();
+		System.out.println("name::"+name);
+		
+		
+		model.addAttribute("username", name);
+		
+		model.addAttribute("event_i_d", event_i_d);
+		System.out.println(event_i_d.get(0).getEVENT_KIND());
+		model.addAttribute("message", "Spring Security Hello World");
+		return "event";
+	}
+	
+	
+	@RequestMapping(value="/NR_event_end_S", method = {RequestMethod.GET,RequestMethod.POST})
+	public String event_end_s(ModelMap model, Principal principal, HttpSession session, EventVo eventVo) {
+ 
+		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();*/
+		
+		/*User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String name = user.getUsername();*/
+
+		UserVo user = new UserVo();
+		
+		EventVo evo  = new EventVo();
+		int page = 1;
+		int countPage = 10;
+		int startPage = ((page - 1) / 10) * 10 + 1;
+
+		int endPage = startPage + countPage - 1;
+		
+		evo.setPAGE_NUM("startPage");
+		evo.setPAGE_SIZE("endPage");
+	   List<EventVo> event_e_s = eventDao.getEventList(eventVo);
+		
+		user = userDao.UserTest(user);
+		
+		String name = principal.getName();
+		System.out.println("name::"+name);
+		
+		
+		model.addAttribute("username", name);
+		
+		model.addAttribute("event_e_s", event_e_s);
+		model.addAttribute("message", "Spring Security Hello World");
+		return "event";
+	}
+	
+	
+	@RequestMapping(value="/NR_event_end_detail", method = {RequestMethod.GET,RequestMethod.POST})
+	public String event_end_detail(ModelMap model, Principal principal, HttpSession session, EventVo eventVo) {
+ 
+		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();*/
+		
+		/*User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String name = user.getUsername();*/
+
+		UserVo user = new UserVo();
+		
+		EventVo evo  = new EventVo();
+		int page = 1;
+		int countPage = 10;
+		int startPage = ((page - 1) / 10) * 10 + 1;
+
+		int endPage = startPage + countPage - 1;
+		
+		evo.setPAGE_NUM("startPage");
+		evo.setPAGE_SIZE("endPage");
+	   List<EventVo> event_e_d = eventDao.getEventListOne(eventVo);
+	                             
+		user = userDao.UserTest(user);
+		
+		String name = principal.getName();
+		System.out.println("name::"+name);
+		
+		
+		model.addAttribute("username", name);
+		
+		model.addAttribute("event_e_d", event_e_d);
+		model.addAttribute("message", "Spring Security Hello World");
+		return "event";
+	}
+	
+	@RequestMapping(value="/NR_event_insert", method = {RequestMethod.GET,RequestMethod.POST})
+	public String event_insert(ModelMap model, Principal principal, HttpSession session, EventVo eventVo) {
+ 
+		/*Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();*/
+		
+		/*User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String name = user.getUsername();*/
+
+		UserVo user = new UserVo();
+		
+		EventVo evo  = new EventVo();
+		int page = 1;
+		int countPage = 10;
+		int startPage = ((page - 1) / 10) * 10 + 1;
+
+		int endPage = startPage + countPage - 1;
+		
+		evo.setPAGE_NUM("startPage");
+		evo.setPAGE_SIZE("endPage");
+	   List<EventVo> event_e_d = eventDao.getEventListOne(eventVo);
+	                             
+		user = userDao.UserTest(user);
+		
+		String name = principal.getName();
+		System.out.println("name::"+name);
+		
+		
+		model.addAttribute("username", name);
+		
+		model.addAttribute("event_e_d", event_e_d);
+		model.addAttribute("message", "Spring Security Hello World");
+		return "event";
+	}
+}

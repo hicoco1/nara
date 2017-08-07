@@ -1,0 +1,240 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src='<c:url value="/resources/js/jquery-1.11.0.min.js"/>' ></script>
+<script src='<c:url value="/resources/js/jquery-ui.min.js"/>' ></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+ 
+    $("#category").change(function() {
+    	
+    	document.getElementById('NR_event_ing_S').style.display="none";
+    	document.getElementById('NR_event_ing_detail').style.display="none";
+    	document.getElementById('NR_event_end_S').style.display="none";
+    	document.getElementById('NR_event_end_detail').style.display="none";
+    	document.getElementById('NR_event_insert').style.display="none";
+
+		var data = document.getElementById($(this).val());
+    	data.style.display="block";
+
+    });
+    
+	$("#goevent_ing_S").click(function(){
+		$("#f_event_ing_S").submit();
+	});
+	$("#goevent_ing_detail").click(function(){
+		$("#f_event_ing_detail").submit();
+	});
+	$("#goevent_end_S").click(function(){
+		$("#f_event_end_S").submit();
+	});
+	$("#goevent_end_detail").click(function(){
+		$("#f_event_end_detail").submit();
+	});
+
+	$("#goevent_insert").click(function(){
+		$("#f_event_insert").submit();
+	});
+	
+});
+</script>
+
+</head>
+<body>
+	<h3>Message : ${message}</h3>	
+	<h3>Username : ${username}</h3>	
+		
+	<div>
+		<select style="width:165px; height:23px;" id="category">
+			<option>Select</option>
+			<option value="NR_event_ing_S">NR_event_ing_S</option>
+			<option value="NR_event_ing_detail">NR_event_ing_detail</option>
+			<option value="NR_event_end_S">NR_event_end_S</option>
+			<option value="NR_event_end_detail">NR_event_end_detail</option>
+			<option value="NR_event_insert">NR_event_insert</option>
+		</select>
+	</div>
+
+	<br>
+	
+	<form id="f_event_ing_S" action="<c:url value='/NR_event_ing_S' />" method='POST'>
+		<div id="NR_event_ing_S" style="display:none;">
+			<div style="float:left; width:15%;">Event_code</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_CODE" name="EVENT_CODE">
+			</div>
+			<div style="float:left; width:15%;">Event_kind</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_KIND" name="EVENT_KIND">
+			</div>
+			<div style="float:left; width:15%;">Event_status</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_STATUS" name="EVENT_STATUS" value="1" readonly>
+			</div>
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<div style="float:left; width:99%; margin-top:10px;">
+				<button type="button" style="height:23px;" id="goevent_ing_S">Request</button>
+			</div>
+		</div>
+	</form>
+
+	<form id="f_event_ing_detail" action="<c:url value='/NR_event_ing_detail' />" method='POST'>
+		<div id="NR_event_ing_detail" style="display:none;">
+			<div style="float:left; width:15%;">Event_code</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_CODE" name="EVENT_CODE">
+			</div>
+			<div style="float:left; width:99%; margin-top:10px;">
+				<button type="button" style="height:23px;" id="goevent_ing_detail">Request</button>
+			</div>
+		</div>
+	</form>
+
+	<form id="f_event_end_S" action="<c:url value='/NR_event_end_S' />" method='POST'>
+		<div id="NR_event_end_S" style="display:none;">
+			<div style="float:left; width:15%;">Event_code</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_CODE" name="EVENT_CODE">
+			</div>
+			<div style="float:left; width:15%;">Event_kind</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_KIND" name="EVENT_KIND">
+			</div>
+			<div style="float:left; width:15%;">Event_status</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_STATUS" name="EVENT_STATUS" value="2" readonly>
+			</div>
+			<div style="float:left; width:99%; margin-top:10px;">
+				<button type="button" style="height:23px;" id="goevent_end_S">Request</button>
+			</div>
+		</div>
+	</form>
+
+	<form id="f_event_end_detail" action="<c:url value='/NR_event_end_detail' />" method='POST'>
+		<div id="NR_event_end_detail" style="display:none;">
+			<div style="float:left; width:15%;">Event_code</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_CODE" name="EVENT_CODE">
+			</div>
+			<div style="float:left; width:99%; margin-top:10px;">
+				<button type="button" style="height:23px;" id="goevent_end_detail">Request</button>
+			</div>
+		</div>
+	</form>
+	
+	
+	
+	<form id="f_event_insert" action="<c:url value='/NR_event_insert' />" method='POST'>
+		<div id="NR_event_insert" style="display:none;">
+			<div style="float:left; width:15%;">Event_code</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_CODE" name="EVENT_CODE">
+			</div>
+			<div style="float:left; width:15%;">Event_kind</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_KIND" name="EVENT_KIND">
+			</div>
+			<div style="float:left; width:15%;">Event_status</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_STATUS" name="EVENT_STATUS" value="1" readonly>
+			</div>
+			<div style="float:left; width:15%;">Event_title</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_TITLE" name="EVENT_TITLE" >
+			</div>
+			<div style="float:left; width:15%;">Event_text</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_TEXT" name="EVENT_TEXT">
+			</div>
+			<div style="float:left; width:15%;">Question_cnt</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="QUESTION_CNT" name="QUESTION_CNT">
+			</div>
+			<div style="float:left; width:15%;">Event_file_name</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_FILE_NAME" name="EVENT_FILE_NAME">
+			</div>
+			<div style="float:left; width:15%;">Event_sdate</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_SDATE" name="EVENT_SDATE">
+			</div>
+			<div style="float:left; width:15%;">Event_edate</div>
+			<div style="float:left; width:85%;">
+				<input type='text' id="EVENT_EDATE" name="EVENT_EDATE">
+			</div>
+			<div style="float:left; width:99%; margin-top:10px;">
+				<button type="button" style="height:23px;" id="goevent_insert">Request</button>
+			</div>
+		</div>
+	</form>
+	<table border ='1'>
+		<c:forEach items="${event_i_s}" var="event_i_s">
+			<tr>
+			
+				<td>${event_i_s.EVENT_CODE}</td>
+				<td>${event_i_s.EVENT_TITLE}</td>
+				<td>${event_i_s.EVENT_SDATE}</td>
+				<td>${event_i_s.EVENT_EDATE}</td>
+				<td>${event_i_s.INSERTDATE}</td>
+			</tr>
+			
+		</c:forEach>
+		
+		<c:forEach items="${event_i_d}" var="event_i_d">
+			<tr>
+			
+				<td>${event_i_d.EVENT_CODE}</td>
+				<td>${event_i_d.EVENT_KIND}</td>
+				<td>${event_i_d.EVENT_STATUS}</td>
+				<td>${event_i_d.EVENT_TITLE}</td>
+				<td>${event_i_d.EVENT_TEXT}</td>
+				<td>${event_i_d.QUESTION_CNT}</td>
+				<td>${event_i_d.EVENT_FILE_NAME}</td>
+				<td>${event_i_d.EVENT_SDATE}</td>
+				<td>${event_i_d.EVENT_EDATE}</td>
+				<td>${event_i_d.OPERATOR}</td>
+				<td>${event_i_d.INSERTDATE}</td>
+				<td>${event_i_d.UPDATEDATE}</td>
+			</tr>
+			
+		</c:forEach>
+		
+		<c:forEach items="${event_e_s}" var="event_e_s">
+			<tr>
+			
+				<td>${event_e_s.EVENT_CODE}</td>
+				<td>${event_e_s.EVENT_TITLE}</td>
+				<td>${event_e_s.EVENT_SDATE}</td>
+				<td>${event_e_s.EVENT_EDATE}</td>
+				<td>${event_e_s.INSERTDATE}</td>
+			</tr>
+			
+		</c:forEach>
+
+    <c:forEach items="${event_e_d}" var="event_e_d">
+			<tr>
+			
+				<td>${event_e_d.EVENT_CODE}</td>
+				<td>${event_e_d.EVENT_KIND}</td>
+				<td>${event_e_d.EVENT_STATUS}</td>
+				<td>${event_e_d.EVENT_TITLE}</td>
+				<td>${event_e_d.EVENT_TEXT}</td>
+				
+				<td>${event_e_d.QUESTION_CNT}</td>
+				<td>${event_e_d.EVENT_FILE_NAME}</td>
+				<td>${event_e_d.EVENT_SDATE}</td>
+				<td>${event_e_d.EVENT_EDATE}</td>
+				<td>${event_e_d.OPERATOR}</td>
+				<td>${event_e_d.INSERTDATE}</td>
+				<td>${event_e_d.UPDATEDATE}</td>
+			</tr>
+		</c:forEach>
+	</table>	
+      
+</body>
+</html>

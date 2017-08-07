@@ -1,0 +1,55 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-4.0.xsd">
+  	 
+  	 
+  	<!-- 인증예외처리 -->
+  	<!-- 
+    <http pattern="/css/**"         security="none" /> 
+    <http pattern="/images/**"      security="none" /> 
+    <http pattern="/javascript/**"  security="none" />  
+    <http pattern="/js/*"           security="none" /> 
+     -->
+    <http pattern="/resources/**"           security="none" /> 
+    
+	<http auto-config="true" use-expressions="true">
+		 <!--<intercept-url pattern="/welcome**"         access="permitAll" /> --> <!-- 모두허용 -->
+		 <intercept-url pattern="/welcome*" access="hasAnyRole('1')" /><!-- 복수개 -->
+		<!--<intercept-url pattern="/welcome*" access="hasRole('2')" />--><!-- 한개 -->
+		<form-login login-page="/Login" login-processing-url="/login" default-target-url="/welcome" authentication-failure-url="/Login?error=1" username-parameter="userId" password-parameter="userPassword"  />
+		<logout logout-success-url="/logout" />
+
+		<!-- enable csrf protection -->
+		<csrf disabled="false"/>
+	</http>
+
+        
+<jdbc-user-service data-source-ref="dataSource" id="userService"
+ users-by-username-query=
+	"select op_id as username, op_pwd as password, login_yn as enabled
+	from NR_OPERATOR
+	where op_id=?"
+	authorities-by-username-query=
+	"select op_id as username, op_level as authority
+	from NR_OPERATOR_AUTH
+	where op_id=?"/>
+          
+
+<authentication-manager>
+ <authentication-provider user-service-ref="userService">
+ </authentication-provider>
+</authentication-manager> 
+ 
+ <!-- 
+	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="test" password="123456" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+ -->
+</beans:beans>

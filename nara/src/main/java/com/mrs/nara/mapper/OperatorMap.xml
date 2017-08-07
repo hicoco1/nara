@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <!-- 
+		이쿼리를 이용하기 위해선 namespace명.id로 접근하면 된다.
+		파라미터를 map으로 넘겼기 때문에 타입을 정의해줘야한다.
+		resultType는 Integer로 줬다. int는 안된다 클래스 타입으로 줘야한다.
+     -->
+<mapper namespace="Operator">
+
+	<select resultType="com.mrs.nara.vo.OperatorVo" parameterType="com.mrs.nara.vo.OperatorVo" id="getOperatorList">
+		SELECT OP_ID ,OP_NAME ,  OP_PHONE , DUPLICATE_LOGIN , LOGIN_YN,
+			   LOGIN_TIME , LOGOUT_TIME, KICK_OUT, INSERT_ID, UPDATE_ID from NR_Operator WHERE 1 = 1 
+		<if test="OP_ID != null and OP_ID != ''">AND OP_ID = ${OP_ID}</if>
+		<if test="OP_NAME != null and OP_NAME != ''">AND OP_NAME LIKE '%' || ${OP_NAME} || '%'</if>
+		<if test="OP_PHONE != null and OP_PHONE != ''">AND OP_PHONE = ${OP_PHONE} </if>
+		ORDER BY OP_ID 
+		<include refid="Paging.altibase"/>
+	</select>
+	
+	
+	<insert id="setOperatorI"  parameterType="com.mrs.nara.vo.OperatorVo" >
+			insert into NR_Operator(
+			OP_ID,    
+			OP_PWD,   
+			OP_NAME,
+			OP_EMAIL,
+			OP_PHONE,
+			OP_HP,      
+			OP_IP,  
+			DUPLICATE_LOGIN,
+			LOGIN_YN,
+			LOGIN_TIME,
+			LOGOUT_TIME,
+			SESSION_ID,
+			KICK_OUT,
+			INSERT_ID, 
+			UPDATE_ID,
+			UPDATE_DATE,
+			INSERT_DATE
+			)
+			values(
+			#{OP_ID} ,
+			#{OP_PWD} , 
+			#{OP_NAME} ,
+			#{OP_EMAIL} ,
+			#{OP_PHONE} ,
+			#{OP_HP} ,
+			#{OP_IP} ,
+			#{DUPLICATE_LOGIN} ,
+			#{LOGIN_YN} ,
+			#{LOGIN_TIME} ,
+			#{LOGOUT_TIME} ,
+			#{SESSION_ID} ,
+			#{KICK_OUT} ,
+			#{INSERT_ID} ,
+			#{UPDATE_ID} ,
+			sysdate,
+			sysdate
+			)
+	
+	</insert>
+		
+	<update id="setOperatorU" parameterType="com.mrs.nara.vo.OperatorVo">
+		update NR_Operator set 
+			UPDATE_DATE = sysdate
+			<if test="OP_PWD != null and OP_PWD != ''">, OP_PWD = #{OP_PWD}</if>
+			<if test="OP_NAME != null and OP_NAME != ''">, OP_NAME = #{OP_NAME}</if>
+			<if test="OP_EMAIL != null and OP_EMAIL != ''">, OP_EMAIL = #{OP_EMAIL}</if>
+			<if test="OP_PHONE != null and OP_PHONE != ''">, OP_PHONE = #{OP_PHONE}</if>
+			<if test="OP_HP != null and OP_HP != ''">, OP_HP = #{OP_HP}</if>
+			<if test="OP_IP != null and OP_IP != ''">, OP_IP = #{OP_IP}</if>
+			<if test="DUPLICATE_LOGIN != null and DUPLICATE_LOGIN != ''">, DUPLICATE_LOGIN = #{DUPLICATE_LOGIN}</if>
+			where OP_ID = #{OP_ID}
+	</update>
+
+	<delete id="setOperatorD" parameterType="com.mrs.nara.vo.OperatorVo">
+		delete from NR_Operator where OP_ID = #{OP_ID}
+	</delete>
+	
+	<select resultType="com.mrs.nara.vo.OperatorVo" parameterType="com.mrs.nara.vo.OperatorVo" id="getOperatorListOne">
+		SELECT * from NR_Operator WHERE 1 = 1 
+			   AND OP_ID = #{OP_ID}
+		ORDER BY OP_ID 
+	</select>
+
+
+
+	<select resultType="com.mrs.nara.vo.OperatorLogVo" parameterType="com.mrs.nara.vo.OperatorLogVo" id="getOperatorLogList">
+		SELECT LOG_DATE ,OP_ID ,  OP_IP , KEYWORD , COMMAND,
+			   COMMENTS , RESULT,UPDATE_DATE,INSERT_DATE  from NR_Operator_Log WHERE 1 = 1 
+		<if test="OP_ID != null and OP_ID != ''">AND OP_ID LIKE '%' || #{OP_ID} || '%'</if>
+		<if test="OP_IP != null and OP_IP != ''">AND OP_IP LIKE '%' || #{OP_IP} || '%'</if>
+		<if test="KEYWORD != null and KEYWORD != ''">AND KEYWORD LIKE '%' || #{KEYWORD} || '%'</if>
+		<if test="COMMENTS != null and COMMENTS != ''">AND COMMENTS LIKE '%' || #{COMMENTS} || '%'</if>		
+		<if test="RESULT != null and RESULT != ''">AND RESULT = #{RESULT} </if>	
+		ORDER BY LOG_DATE 
+		<include refid="Paging.altibase"/>
+	</select>
+
+
+	<select resultType="com.mrs.nara.vo.OperatorAuthVo" parameterType="com.mrs.nara.vo.OperatorAuthVo" id="getOperatorAuthList">
+		SELECT  OP_ID,OP_LEVEL,UPDATE_DATE,INSERT_DATE from NR_Operator_Auth WHERE 1 = 1 
+		<if test="OP_ID != null and OP_ID != ''">AND OP_ID = #{OP_ID}</if>
+		ORDER BY OP_ID 
+		<include refid="Paging.altibase"/>
+	</select>
+	
+	<insert id="setOperatorAuthI"  parameterType="com.mrs.nara.vo.OperatorAuthVo" >
+			insert into NR_Operator_Auth(
+			OP_ID,    
+			OP_LEVEL,   
+			UPDATE_DATE,
+			INSERT_DATE
+			)
+			values(
+			#{OP_ID} ,
+			#{OP_LEVEL} , 
+			sysdate,
+			sysdate
+			)
+	
+	</insert>
+		
+	<update id="setOperatorAuthU" parameterType="com.mrs.nara.vo.OperatorAuthVo">
+		update NR_Operator_Auth set 
+			UPDATE_DATE = sysdate
+			<if test="OP_LEVEL != null and OP_LEVEL != ''">, OP_LEVEL = #{OP_LEVEL}</if>
+			where OP_ID = #{OP_ID}
+	</update>
+
+	<delete id="setOperatorAuthD" parameterType="com.mrs.nara.vo.OperatorAuthVo">
+		delete from NR_Operator_Auth where OP_ID = #{OP_ID}
+	</delete>
+	
+	<select resultType="com.mrs.nara.vo.OperatorAuthVo" parameterType="com.mrs.nara.vo.OperatorAuthVo" id="getOperatorAuthOne">
+		SELECT * from NR_Operator_Auth WHERE 1 = 1 
+			   AND OP_ID = #{OP_ID}
+		ORDER BY OP_ID 
+	</select>
+
+	
+</mapper>

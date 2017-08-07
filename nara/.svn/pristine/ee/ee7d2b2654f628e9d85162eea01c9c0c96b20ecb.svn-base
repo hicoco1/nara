@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <!-- 
+		이쿼리를 이용하기 위해선 namespace명.id로 접근하면 된다.
+		파라미터를 map으로 넘겼기 때문에 타입을 정의해줘야한다.
+		resultType는 Integer로 줬다. int는 안된다 클래스 타입으로 줘야한다.
+     -->
+<mapper namespace="Question">
+
+	<select id="getQuestionList" parameterType="com.mrs.nara.vo.QuestionVo" resultType="com.mrs.nara.vo.QuestionVo">
+		SELECT 
+			QUESTIONNO    ,
+			QUESTION      ,
+			ANSWER        ,
+			CLASSIFY_CODE ,
+			INSERTDATE    ,
+			UPDATEDATE    
+			from NR_QUESTION
+			WHERE  1 = 1	
+			<if test="CLASSIFY_CODE != null and CLASSIFY_CODE != ''">AND CLASSIFY_CODE = #{CLASSIFY_CODE}</if>
+			<if test="QUESTION != null and QUESTION != ''">AND QUESTION LIKE '%' || #{QUESTION} || '%'</if>	
+			ORDER BY QUESTIONNO
+		<include refid="Paging.altibase"/>
+	</select>
+	
+	
+	<insert id="setInQuestion" parameterType="com.mrs.nara.vo.QuestionVo">
+		insert into NR_QUESTION(
+			QUESTIONNO    ,
+			QUESTION      ,
+			ANSWER        ,
+			CLASSIFY_CODE ,
+			INSERTDATE    ,
+			UPDATEDATE  	
+			)
+			values(
+				#{QUESTIONNO},
+				#{QUESTION},
+				#{ANSWER},
+				#{CLASSIFY_CODE},
+				#{INSERTDATE},
+				#{UPDATEDATE}
+			)
+	</insert>
+	
+	<update id="setUpQuestion" parameterType="com.mrs.nara.vo.QuestionVo">
+		update NR_QUESTION set 
+			UPDATEDATE = #{UPDATEDATE}
+			<if test="QUESTION != null and QUESTION != ''">, QUESTION = #{QUESTION}</if>
+			<if test="ANSWER != null and ANSWER != ''">, ANSWER = #{ANSWER}</if>
+			<if test="CLASSIFY_CODE != null and CLASSIFY_CODE != ''">, CLASSIFY_CODE = #{CLASSIFY_CODE}</if>
+			<if test="QUESTIONNO!= null and QUESTIONNO != ''">WHERE QUESTIONNO = #{QUESTIONNO}</if>
+	</update>
+	
+	<delete id="setDelQuestion" parameterType="com.mrs.nara.vo.QuestionVo">
+		delete from NR_QUESTION where QUESTIONNO = #{QUESTIONNO}
+	</delete>
+	
+</mapper>
